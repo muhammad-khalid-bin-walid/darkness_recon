@@ -3,23 +3,29 @@ This guide provides comprehensive instructions to install all required tools for
 Prerequisites
 
 System: Ubuntu/Debian-based Linux.
-Dependencies: Install essential packages:sudo apt update && sudo apt install -y git curl python3 python3-pip snapd build-essential libpcap-dev ruby ruby-dev chromium-browser
+
+Dependencies: Install essential packages:
+sudo apt update && sudo apt install -y git curl python3 python3-pip snapd build-essential libpcap-dev ruby ruby-dev chromium-browser
 sudo snap install go --classic
 
 
-Go Environment: Configure GOPATH:echo 'export GOPATH=$HOME/go' >> ~/.bashrc
+Go Environment: Configure GOPATH:
+echo 'export GOPATH=$HOME/go' >> ~/.bashrc
 echo 'export PATH=$PATH:$GOPATH/bin' >> ~/.bashrc
 source ~/.bashrc
 
 
-Python: Update pip:pip3 install --upgrade pip
+Python: Update pip:
+pip3 install --upgrade pip
 
 
-Node.js: Install for apiscope:curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+Node.js: Install for apiscope:
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
 sudo apt install -y nodejs
 
 
-Docker: Install for trufflehog:sudo apt install -y docker.io
+Docker: Install for trufflehog:
+sudo apt install -y docker.io
 sudo systemctl enable docker --now
 sudo usermod -aG docker $USER
 
@@ -232,9 +238,9 @@ done
 Notes
 
 Permissions: masscan, nmap require sudo; Docker requires root or group permissions.
-API Keys: Configure for amass, findomain, bbot, spiderfoot, cloud_enum, findmain, bbot, spiderfoot, cloud_enum.
+API Keys: Configure for amass, findomain, bbot, spiderfoot, cloud_enum.
 System Load: Adjust BASE_THREADS=150 if overloaded; dynamically scaled.
-Updates: Regularly update tools (go install ...@latest, pip install --upgrade ..., nuclei -update-tables).
+Updates: Regularly update tools (go install ...@latest, pip install --upgrade ..., nuclei -update-templates).
 Custom Paths: Update RESOLVERS, WORDLIST, WEB_WORDLIST, API_WORDLIST, NMAP_SCRIPTS, amass-config, subjack-fingerprints, bbot-config.
 Troubleshooting: Check GitHub repositories for issues; ensure chromium for aquatone; verify Docker for trufflehog.
 
