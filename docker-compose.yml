@@ -1,0 +1,170 @@
+# Dark Recon Framework v4 - Docker Compose Configuration
+# Supports single scan, distributed scanning, and monitoring modes
+
+version: '3.8'
+
+services:
+  # Single scan service
+  scan:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: dark-recon-framework:latest
+    container_name: dark-recon-scan
+    volumes:
+      - ./output:/app/output
+      - ./cache:/app/cache
+      - ./logs:/app/logs
+      - ./config:/app/config:ro
+    environment:
+      - DOMAIN=${DOMAIN:-}
+      - THREADS=${THREADS:-150}
+      - TIMEOUT=${TIMEOUT:-300}
+      - RATE_LIMIT=${RATE_LIMIT:-1000}
+      - SHODAN_API_KEY=${SHODAN_API_KEY:-}
+      - CENSYS_API_ID=${CENSYS_API_ID:-}
+      - CENSYS_API_SECRET=${CENSYS_API_SECRET:-}
+      - SECURITYTRAILS_API_KEY=${SECURITYTRAILS_API_KEY:-}
+      - WEBHOOK_URL=${WEBHOOK_URL:-}
+      - ENV_PROFILE=${ENV_PROFILE:-default}
+      - GRACEFUL_DEGRADATION=${GRACEFUL_DEGRADATION:-true}
+      - DEBUG_MODE=${DEBUG_MODE:-false}
+    networks:
+      - dark-recon
+    # Required for network scanning
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp:size=100M
+    mem_limit: 4g
+    cpus: 2.0
+    command: ["${DOMAIN:-example.com}", "--profile", "${ENV_PROFILE:-default}"]
+
+  # Install tools only
+  install:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: dark-recon-framework:latest
+    container_name: dark-recon-install
+    volumes:
+      - ./cache:/app/cache
+      - ./config:/app/config
+    command: ["--install"]
+
+  # Dev mode - fast scanning
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: dark-recon-framework:latest
+    container_name: dark-recon-dev
+    volumes:
+      - ./output:/app/output
+      - ./cache:/app/cache
+      - ./logs:/app/logs
+      - ./config:/app/config:ro
+    environment:
+      - DOMAIN=${DOMAIN:-}
+      - ENV_PROFILE=dev
+      - GRACEFUL_DEGRADATION=true
+      - DEBUG_MODE=true
+    networks:
+      - dark-recon
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    mem_limit: 2g
+    cpus: 1.0
+    command: ["${DOMAIN:-example.com}", "--profile", "dev"]
+
+  # Staging mode - moderate scanning
+  staging:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: dark-recon-framework:latest
+    container_name: dark-recon-staging
+    volumes:
+      - ./output:/app/output
+      - ./cache:/app/cache
+      - ./logs:/app/logs
+      - ./config:/app/config:ro
+    environment:
+      - DOMAIN=${DOMAIN:-}
+      - ENV_PROFILE=staging
+      - GRACEFUL_DEGRADATION=true
+    networks:
+      - dark-recon
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    mem_limit: 4g
+    cpus: 2.0
+    command: ["${DOMAIN:-example.com}", "--profile", "staging"]
+
+  # Production mode - full scanning
+  prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: dark-recon-framework:latest
+    container_name: dark-recon-prod
+    volumes:
+      - ./output:/app/output
+      - ./cache:/app/cache
+      - ./logs:/app/logs
+      - ./config:/app/config:ro
+    environment:
+      - DOMAIN=${DOMAIN:-}
+      - ENV_PROFILE=prod
+      - GRACEFUL_DEGRADATION=false
+    networks:
+      - dark-recon
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    mem_limit: 8g
+    cpus: 4.0
+    command: ["${DOMAIN:-example.com}", "--profile", "prod", "--deep"]
+
+  # Worker for distributed scanning
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: dark-recon-framework:latest
+    deploy:
+      replicas: ${DISTRIBUTED_WORKERS:-4}
+      resources:
+        limits:
+          memory: 2G
+          cpus: '2'
+    volumes:
+      - distributed-output:/app/output
+      - ./cache:/app/cache
+      - ./logs:/app/logs
+    environment:
+      - DOMAIN=${DOMAIN:-}
+      - WORKER_ID=${WORKER_ID:-1}
+      - TOTAL_WORKERS=${TOTAL_WORKERS:-4}
+      - THREADS=${THREADS:-50}
+      - RATE_LIMIT=${RATE_LIMIT:-500}
+    networks:
+      - dark-recon
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    command: ["${DOMAIN:-example.com}", "--fast", "--quiet"]
+
+networks:
+  dark-recon:
+    driver: bridge
+
+volumes:
+  distributed-output:
+    driver: local

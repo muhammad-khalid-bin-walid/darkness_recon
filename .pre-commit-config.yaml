@@ -1,0 +1,23 @@
+repos:
+  - repo: local
+    hooks:
+      - id: secrets-hygiene
+        name: Dark Recon Secrets Hygiene
+        entry: python3 lib/secrets_hygiene.py output cache logs
+        language: system
+        pass_filenames: false
+        always_run: true
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.18.3
+    hooks:
+      - id: gitleaks
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: detect-private-key
+      - id: check-added-large-files
+        args: ["--maxkb=1000"]
+      - id: end-of-file-fixer
+      - id: trailing-whitespace

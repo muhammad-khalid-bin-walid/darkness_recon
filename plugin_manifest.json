@@ -1,0 +1,96 @@
+{
+  "version": "1.0.2",
+  "framework": "dark-recon",
+  "phases": {
+    "subdomains": {
+      "file": "phases/subdomain_phase.sh",
+      "function": "subdomain_phase",
+      "track": "0",
+      "depends": [],
+      "tools_required": ["subfinder", "assetfinder", "amass", "findomain"],
+      "description": "Subdomain enumeration using passive and active sources",
+      "enabled": true
+    },
+    "dns": {
+      "file": "phases/dns_phase.sh",
+      "function": "dns_phase",
+      "track": "0",
+      "depends": ["subdomains"],
+      "tools_required": ["dnsx", "puredns", "dnsrecon"],
+      "description": "DNS record analysis and resolution validation",
+      "enabled": true
+    },
+    "live": {
+      "file": "phases/live_phase.sh",
+      "function": "live_phase",
+      "track": "0",
+      "depends": ["dns"],
+      "tools_required": ["httpx", "curl"],
+      "description": "Live host detection and HTTP probing",
+      "enabled": true
+    },
+    "ssl": {
+      "file": "phases/ssl_phase.sh",
+      "function": "ssl_phase",
+      "track": "1",
+      "depends": ["live"],
+      "tools_required": ["sslscan", "testssl.sh", "nmap"],
+      "description": "SSL/TLS certificate and configuration analysis",
+      "enabled": false
+    },
+    "nuclei": {
+      "file": "phases/nuclei_phase.sh",
+      "function": "nuclei_phase",
+      "track": "1",
+      "depends": ["live"],
+      "tools_required": ["nuclei"],
+      "description": "Template-based vulnerability scanning with Nuclei",
+      "enabled": false
+    },
+    "api": {
+      "file": "phases/api_phase.sh",
+      "function": "api_phase",
+      "track": "3",
+      "depends": ["api", "crawl"],
+      "tools_required": ["katana", "arjun", "ffuf"],
+      "description": "API endpoint discovery and analysis",
+      "enabled": false
+    },
+    "secrets": {
+      "file": "phases/secrets_phase.sh",
+      "function": "secrets_phase",
+      "track": "1",
+      "depends": ["crawl"],
+      "tools_required": ["trufflehog", "gitleaks", "gitallsecrets"],
+      "description": "Secret and credential detection in source code and repos",
+      "enabled": false
+    },
+    "vuln": {
+      "file": "phases/vuln_phase.sh",
+      "function": "vuln_phase",
+      "track": "6",
+      "depends": ["live"],
+      "tools_required": ["nuclei", "nikto", "wapiti"],
+      "description": "Vulnerability scanning and verification",
+      "enabled": false
+    },
+    "cloud": {
+      "file": "phases/cloud_phase.sh",
+      "function": "cloud_phase",
+      "track": "5",
+      "depends": ["subdomains", "live", "crawl"],
+      "tools_required": [" ScoutSuite", "Prowler", "cloud_enum"],
+      "description": "Cloud infrastructure security assessment (AWS/Azure/GCP)",
+      "enabled": false
+    },
+    "reporting": {
+      "file": "phases/reporting_phase.sh",
+      "function": "reporting_phase",
+      "track": "8",
+      "depends": [],
+      "tools_required": ["jq", "python3"],
+      "description": "Aggregate findings and generate final report",
+      "enabled": true
+    }
+  }
+}
