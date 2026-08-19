@@ -1,8 +1,8 @@
-# Dark Recon Framework v4: 40-Phase Zero False Positive Reconnaissance Framework
+# Dark Recon Framework : 40-Phase Zero False Positive Reconnaissance Framework
 
 ## Overview
 
-Dark Recon Framework v4 is a comprehensive, modular Bash framework for automated reconnaissance and security testing. Built by **DarkLegende**, it features **40 phases** with a **0 false positives guarantee** through multi-layered verification, cross-referencing, and confidence scoring.
+Dark Recon Framework is a comprehensive, modular Bash framework for automated reconnaissance and security testing. Built by **DarkLegende**, it features **40 phases** with a **0 false positives guarantee** through multi-layered verification, cross-referencing, and confidence scoring.
 
 **v4 Major Improvements over v3:**
 
