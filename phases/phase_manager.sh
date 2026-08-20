@@ -654,7 +654,10 @@ PHASE_ENABLED=(
 # Phase execution function
 run_phase() {
     local phase="$1"
-    local deps=(${PHASE_DEPS[$phase]})
+    local deps
+    if [ -n "${PHASE_DEPS[$phase]:-}" ]; then
+        deps=(${PHASE_DEPS[$phase]})
+    fi
     local enabled="${PHASE_ENABLED[$phase]}"
     
     # Check if phase is enabled
@@ -671,7 +674,7 @@ run_phase() {
     fi
     
     # Check dependencies
-    for dep in $deps; do
+    for dep in ${deps[@]:-}; do
         if [ ! -f "$CACHE_DIR/state/$dep.done" ]; then
             log "WARN" "Phase $phase depends on $dep which is not completed"
             return 1
