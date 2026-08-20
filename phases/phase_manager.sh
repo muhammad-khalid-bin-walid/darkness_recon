@@ -1065,7 +1065,9 @@ main() {
     done
     
     # Override phase settings from command line
-    PHASE_ENABLED["$SKIP_PHASE"]=false
+    if [ -n "$SKIP_PHASE" ]; then
+        PHASE_ENABLED["$SKIP_PHASE"]=false
+    fi
     PHASE_ENABLED["waf"]="$WAF_CHECK"
     PHASE_ENABLED["nuclei"]="$NUCLEI_CHECK"
     PHASE_ENABLED["ports"]="$PORT_SCAN"
